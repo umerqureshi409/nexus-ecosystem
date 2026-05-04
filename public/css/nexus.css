@@ -1065,3 +1065,15 @@ input:checked + .slider::before { transform: translateX(17px); background: #080a
   .screen-audio-row { padding: 8px 12px; }
   .screen-audio-live { padding: 7px 12px; }
 }
+
+/* ── PIN shake animation on wrong PIN ─────────────────────────────────────── */
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  15%      { transform: translateX(-6px); }
+  30%      { transform: translateX(6px); }
+  45%      { transform: translateX(-5px); }
+  60%      { transform: translateX(5px); }
+  75%      { transform: translateX(-3px); }
+  90%      { transform: translateX(3px); }
+}
+.shake { animation: shake 0.55s ease; border-color: var(--red) !important; }

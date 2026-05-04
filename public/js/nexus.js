@@ -147,7 +147,8 @@ let _appInitialized = false;
 function initApp() {
   if (_appInitialized) return;
   _appInitialized = true;
-  show('app');
+  $id('app').classList.remove('hidden');
+  $id('app').classList.add('active');
   renderSidebar();
   initTabs();
   initFiles();
@@ -239,8 +240,8 @@ async function connectWS() {
     dot.className = 'conn-dot';
     clearInterval(S._hb);
     clearTimeout(S.reconnectTimer);
-    // Only auto-reconnect if we were already connected (app is showing)
-    if ($id('app')?.classList.contains('active')) {
+    // Only auto-reconnect if app is active (not on setup/pin screen)
+    if (_appInitialized && $id('app')?.classList.contains('active')) {
       S.reconnectTimer = setTimeout(() => connectWS(), S.reconnectDelay);
       S.reconnectDelay = Math.min(S.reconnectDelay * 1.5, 30000);
     }
@@ -280,20 +281,31 @@ function handleMsg(msg) {
     }
 
     case 'AUTH_FAILED': {
-      toast('Auth Failed', msg.reason || 'Invalid PIN', 'error');
-      hide('app');
-      // Show pin field and setup screen to allow retry
+      toast('Auth Failed', msg.reason || 'Invalid PIN — please try again', 'error');
+
+      // Close the failed WebSocket cleanly
+      clearInterval(S._hb);
+      if (S.ws) { try { S.ws.close(); } catch {} S.ws = null; }
+      S.connected = false;
+
+      // Reset so initApp() / connectWS() can run again on next attempt
+      _appInitialized = false;
+
+      // Hide app, restore setup screen
+      $id('app').classList.add('hidden');
+      $id('app').classList.remove('active');
+      $id('setup-screen').classList.remove('hidden');
+
+      // Show PIN section and shake the input
       const ps = $id('pin-section');
-      if (ps) {
-        ps.style.display = 'flex';
-        // Focus on PIN input for convenience
-        setTimeout(() => {
-          const pinInput = $id('setup-pin');
-          if (pinInput) pinInput.focus();
-        }, 300);
+      if (ps) ps.style.display = 'flex';
+
+      const pinInput = $id('setup-pin');
+      if (pinInput) {
+        pinInput.value = '';
+        pinInput.classList.add('shake');
+        setTimeout(() => { pinInput.classList.remove('shake'); pinInput.focus(); }, 600);
       }
-      show('setup-screen');
-      // Clear stored device info so they can try again
       $id('setup-name').value = S.deviceName || '';
       break;
     }
