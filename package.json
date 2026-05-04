@@ -1,0 +1,29 @@
+{
+  "name": "nexus-ecosystem",
+  "version": "2.0.0",
+  "description": "Cross-platform local device ecosystem — file transfer, screen share, clipboard sync, voice, messages. No internet required.",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node server/index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1",
+    "node-turn": "^0.0.6",
+    "qrcode": "^1.5.3",
+    "uuid": "^9.0.1",
+    "ws": "^8.17.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "keywords": [
+    "local-network",
+    "file-transfer",
+    "screen-share",
+    "offline",
+    "cross-platform"
+  ],
+  "license": "MIT"
+}

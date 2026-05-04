@@ -1,0 +1,16 @@
+{
+  "name": "NEXUS — Device Ecosystem",
+  "short_name": "NEXUS",
+  "description": "Cross-platform local device ecosystem. No internet required.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0b0d",
+  "theme_color": "#0a0b0d",
+  "orientation": "any",
+  "icons": [
+    { "src": "/assets/icon192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/assets/icon512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "categories": ["utilities", "productivity"],
+  "screenshots": []
+}
